@@ -1,10 +1,10 @@
 {
   "name": "@shish2k/browserslist-logs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "turn web server access logs into a browserslist file",
   "author": "Shish <shish@shishnet.org>",
   "license": "MIT",
-  "main": "dist/index.js",
+  "bin": "dist/index.js",
   "scripts": {
     "clean": "npx rimraf coverage dist node_modules",
     "test": "jest tests/*.ts",

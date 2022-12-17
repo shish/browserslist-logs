@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command, InvalidArgumentError } from "commander";
 import { resolveUserAgent } from "browserslist-useragent";
 import fs from "node:fs";
