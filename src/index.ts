@@ -34,7 +34,9 @@ export async function processLogs(input: string | null, output: string | null) {
     for await (const line of rl) {
         try {
             const uas = line.match(/Mozilla.*?"/);
-            if(!uas) {continue;}
+            if (!uas) {
+                continue;
+            }
             const ua = resolveUserAgent(uas[0]);
             if (ua.family && ua.version) {
                 const f = ua.family,
