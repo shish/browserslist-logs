@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { Command, InvalidArgumentError } from "commander";
 import { resolveUserAgent } from "browserslist-useragent";
+import { Command, InvalidArgumentError } from "commander";
 import fs from "node:fs";
-import readline from "node:readline";
 import process from "node:process";
+import readline from "node:readline";
 
 function parseArgs(argv: Array<string>) {
     const program = new Command();
