@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { resolveUserAgent } from "browserslist-useragent";
-import { Command, InvalidArgumentError } from "commander";
 import fs from "node:fs";
 import process from "node:process";
 import readline from "node:readline";
+import { resolveUserAgent } from "browserslist-useragent";
+import { Command, InvalidArgumentError } from "commander";
 
 function parseArgs(argv: Array<string>) {
     const program = new Command();
@@ -13,8 +13,8 @@ function parseArgs(argv: Array<string>) {
         .option("-i, --input <file>", "File to read from (default stdin)")
         .option("-o, --output <file>", "File to write to (default stdout)");
 
-    let parsed = program.parse(argv);
-    let args = parsed.opts();
+    const parsed = program.parse(argv);
+    const args = parsed.opts();
 
     if (process.stdin.isTTY && !args.input) {
         throw new InvalidArgumentError("No input file specified");
@@ -27,10 +27,10 @@ export async function processLogs(input: string | null, output: string | null) {
     const stream = input ? fs.createReadStream(input) : process.stdin;
     const rl = readline.createInterface({
         input: stream,
-        crlfDelay: Infinity,
+        crlfDelay: Number.POSITIVE_INFINITY,
     });
 
-    let browsers: Record<string, Record<string, number>> = {};
+    const browsers: Record<string, Record<string, number>> = {};
     let total = 0;
     for await (const line of rl) {
         try {
@@ -40,8 +40,8 @@ export async function processLogs(input: string | null, output: string | null) {
             }
             const ua = resolveUserAgent(uas[0]);
             if (ua.family && ua.version) {
-                const f = ua.family,
-                    v = ua.version.split(".")[0];
+                const f = ua.family;
+                const v = ua.version.split(".")[0];
                 if (!browsers[f]) browsers[f] = {};
                 if (!browsers[f][v]) browsers[f][v] = 0;
                 browsers[f][v]++;
@@ -50,13 +50,13 @@ export async function processLogs(input: string | null, output: string | null) {
         } catch {}
     }
 
-    let frac: Record<string, Record<string, number>> = {};
+    const frac: Record<string, Record<string, number>> = {};
     Object.keys(browsers).map((family) => {
         frac[family] = {};
         Object.keys(browsers[family]).map((version) => {
-            let f = (browsers[family][version] / total) * 100;
+            const f = (browsers[family][version] / total) * 100;
             if (f >= 0.1) {
-                frac[family][version] = parseFloat(f.toFixed(2));
+                frac[family][version] = Number.parseFloat(f.toFixed(2));
             }
         });
     });
@@ -71,7 +71,6 @@ export async function processLogs(input: string | null, output: string | null) {
     }
 }
 
-if (require.main === module) {
-    const args = parseArgs(process.argv);
-    processLogs(args.input, args.output);
-}
+// Entry point when run directly (shebang + bin)
+const args = parseArgs(process.argv);
+processLogs(args.input, args.output);
