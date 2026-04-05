@@ -51,9 +51,9 @@ export async function processLogs(input: string | null, output: string | null) {
     }
 
     const frac: Record<string, Record<string, number>> = {};
-    Object.keys(browsers).map((family) => {
+    Object.keys(browsers).forEach((family) => {
         frac[family] = {};
-        Object.keys(browsers[family]).map((version) => {
+        Object.keys(browsers[family]).forEach((version) => {
             const f = (browsers[family][version] / total) * 100;
             if (f >= 0.1) {
                 frac[family][version] = Number.parseFloat(f.toFixed(2));
